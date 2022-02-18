@@ -1,12 +1,12 @@
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
  
-export type OrderDocument = Order & Document;
+export type ProductDocument = Product & Document;
  
 @Schema({})
-export class Order {
+export class Product {
     @Prop({ unique: true })
-    DeliveryOrderId: String;
+    ProductId: String;
 
     @Prop()
     MerchantId: String;
@@ -30,10 +30,10 @@ export class Order {
     received: String;
 
     @Prop({default: 'P'})
-    statusOrder: string;
+    statusProduct: string;
 
     @Prop({default: Date.now})
     createdAt: Date
 }
  
-export const OrderSchema = SchemaFactory.createForClass(Order);
+export const ProductSchema = SchemaFactory.createForClass(Product);

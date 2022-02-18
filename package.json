@@ -23,10 +23,12 @@
   "dependencies": {
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
+    "@nestjs/microservices": "^8.3.1",
     "@nestjs/mongoose": "^9.0.2",
     "@nestjs/platform-express": "^8.0.0",
     "amqp-connection-manager": "^4.1.1",
     "amqplib": "^0.8.0",
+    "microservices": "^0.1.0",
     "mongoose": "^6.2.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

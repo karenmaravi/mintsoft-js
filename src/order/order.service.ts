@@ -3,12 +3,13 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateOrderDTO } from "./order.dto";
 import { Order, OrderDocument } from "./order.schema";
+import { OrderClass } from './order';
 
 @Injectable()
 export class OrderService {
     constructor (
         @InjectModel(Order.name) private orderModel: Model<OrderDocument>,
-        //private orderClass: OrderClass,
+        private orderClass: OrderClass,
     ) {}
 
     async notify(createOrderDTO: CreateOrderDTO):Promise<Order>{
@@ -38,18 +39,17 @@ export class OrderService {
     }
 
     async insert(createOrderDTO: CreateOrderDTO):Promise<object>{
-        //const cliente = await this.orderClass.getClient(createOrderDTO.OauthClient._id);
-       // const prod = await this.orderClass.getProduct(createOrderDTO.MerchanAppId);
-      //  return prod
-        return createOrderDTO
+        const cliente = await this.orderClass.getClient(createOrderDTO.OauthClient._id);
+       const prod = await this.orderClass.getProduct(createOrderDTO.MerchanAppId);
+       return prod
     }
 
     async getStatus(idOrder): Promise<object>{
-       // const order = await this.orderClass.getStatus(idOrder);
+       const order = await this.orderClass.getStatus(idOrder);
         console.log(idOrder)
 
-       // const updateStatus = await this.orderModel.findByIdAndUpdate(idOrder,CreateOrderDTO, {statusOrder:'F'})
+       const updateStatus = await this.orderModel.findByIdAndUpdate(idOrder,CreateOrderDTO, {statusOrder:'F'})
 
-        return idOrder
+        return updateStatus
     }
 }

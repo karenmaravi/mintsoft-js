@@ -1,5 +1,5 @@
-export class CreateOrderDTO{
-    readonly DeliveryOrderId: string;
+export class CreateProductDTO{
+    readonly ProductId: string;
     readonly MerchantId: string;
     readonly MerchanAppId: string;
     readonly OauthClient: {

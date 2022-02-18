@@ -4,11 +4,12 @@ import { CreateOrderDTO } from './order.dto';
 
 @Controller('order')
 export class OrderController {
-    constructor(private productoService: OrderService){}
+    constructor(private orderService: OrderService){}
    
-    @Post('/notify')
+    @Post('notify')
     async notify(@Res() res, @Body() createOrderDTO: CreateOrderDTO){
-        const notify= await this.productoService.notify(createOrderDTO)
+        const notify= await this.orderService.notify(createOrderDTO)
+        console.log(notify)
         res.status(HttpStatus.OK).json({
             message: 'OK',
             order: notify
@@ -16,9 +17,9 @@ export class OrderController {
 
     }
 
-    @Get('/getClient')
-    async getClient(@Res() res, @Param() idClien){
-        const client = await this.productoService.getClient(idClien)
+    @Get('getClient/:idClien')
+    async getClient(@Res() res, @Param('idClien') idClien){
+        const client = await this.orderService.getClient(idClien)
         res.status(HttpStatus.OK).json({
             message: 'OK',
             client: client
