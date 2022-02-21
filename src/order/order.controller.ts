@@ -1,11 +1,22 @@
-import { Controller, Post, Res, Body, HttpStatus, Get, Param } from '@nestjs/common';
+import { Controller, Post, Res, Body, HttpStatus, Get, Param, Inject } from '@nestjs/common';
 import { OrderService } from "./order.service";
 import { CreateOrderDTO } from './order.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { ClientProxy } from "@nestjs/microservices";
+import { AmqpModule } from "nestjs-amqp";
+import { ExampleService } from './order.provider'
+import { ExampleController } from './order.consumer'
+import { Consumer, Consume } from '@enriqcg/nestjs-amqp'
 
 @Controller('order')
 export class OrderController {
-    constructor(private orderService: OrderService){}
-   
+    constructor(
+        private orderService: OrderService,
+        //@Inject('0RDER_SERVICE') private client: ClientProxy
+        //private readonly exampleService: ExampleService
+    ){}
+
+
     @Post('notify')
     async notify(@Res() res, @Body() createOrderDTO: CreateOrderDTO){
         const notify= await this.orderService.notify(createOrderDTO)
@@ -28,7 +39,9 @@ export class OrderController {
 
     @Get()
     getAll(){
-        return 'HOLA'
+       // this.client.emit('hello','Hellor from RabbitMQ');
+       //this.orderService.sendEvent()
+        return 'HOLA';
     }
 
 }
