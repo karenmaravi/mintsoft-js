@@ -4,8 +4,6 @@ import { CreateOrderDTO } from './order.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { ClientProxy } from "@nestjs/microservices";
 import { AmqpModule } from "nestjs-amqp";
-import { ExampleService } from './order.provider'
-import { ExampleController } from './order.consumer'
 import { Consumer, Consume } from '@enriqcg/nestjs-amqp'
 
 @Controller('order')
@@ -41,6 +39,7 @@ export class OrderController {
     getAll(){
        // this.client.emit('hello','Hellor from RabbitMQ');
        //this.orderService.sendEvent()
+       this.orderService.all()
         return 'HOLA';
     }
 

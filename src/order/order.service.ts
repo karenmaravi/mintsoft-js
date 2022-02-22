@@ -14,11 +14,12 @@ import { Connection } from 'amqplib';
 @Injectable()
 export class OrderService {
     constructor (
-        @InjectAmqpConnection()
-    private readonly amqp: Connection,
+    //     @InjectAmqpConnection()
+    // private readonly amqp: Connection,
        // private readonly amqpService: AMQPService,
         @InjectModel(Order.name) private orderModel: Model<OrderDocument>,
         private orderClass: OrderClass,
+        //private orderPublisher: OrderPublisher
     ) {
         //this.startConnect();
     }
@@ -87,6 +88,7 @@ export class OrderService {
         return updateStatus
     }
     all(){
+        //this.orderPublisher.sendEvent()
         return 'HOla'
     }
 }
