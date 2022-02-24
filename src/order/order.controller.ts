@@ -17,7 +17,7 @@ export class OrderController {
 
     @Post('notify')
     async notify(@Res() res, @Body() createOrderDTO: CreateOrderDTO){
-        const notify= await this.orderService.notify(createOrderDTO)
+        const notify= await this.orderService.addOrder(createOrderDTO)
         console.log(notify)
         res.status(HttpStatus.OK).json({
             message: 'OK',
@@ -34,13 +34,4 @@ export class OrderController {
             client: client
         })
     }
-
-    @Get()
-    getAll(){
-       // this.client.emit('hello','Hellor from RabbitMQ');
-       //this.orderService.sendEvent()
-       this.orderService.all()
-        return 'HOLA';
-    }
-
 }

@@ -1,55 +1,24 @@
 import {Injectable, Logger} from '@nestjs/common';
-import {InjectAmqpConnection} from 'nestjs-amqp';
-import {  } from 'nestjs-amqp';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateOrderDTO } from "./order.dto";
 import { Order, OrderDocument } from "./order.schema";
+import { RabbitmqPublish } from "../utils/rabbitmq/rabbitmq.publish";
 import { OrderClass } from './order';
-import { Connection } from 'amqplib';
-//import { AMQPService } from '@enriqcg/nestjs-amqp'
-//import { AMQPService } from 'nestjs-amqp'
 
 
 @Injectable()
 export class OrderService {
     constructor (
-    //     @InjectAmqpConnection()
-    // private readonly amqp: Connection,
-       // private readonly amqpService: AMQPService,
         @InjectModel(Order.name) private orderModel: Model<OrderDocument>,
         private orderClass: OrderClass,
-        //private orderPublisher: OrderPublisher
-    ) {
-        //this.startConnect();
-    }
-
-    // async publish(message: string)  {
-    //     await this.amqp.createChannel((err, channel) => {
-    //       if (err != null) {
-    //         Logger.alert(err, 'TestProvider');
-    //       }
-    //       channel.assertQueue('test_queue_name');
-    //       channel.sendToQueue('test_queue_name', message);
-    //     });
-    //   }
-      
-    // async sendEvent() {
-    //     const amqp = this.amqpService.getChannel()
-    
-        
-    //     const v= await amqp.publish('ex_order', 'order_name', Buffer.from(JSON.stringify({ hola: 'HOLAAAAAAAA' })))
-    //     console.log(v)
-    //   }
-    
-//       @Publish("queue_name")
-//   async publish() {
-//     return "Send this to 'queue queue_name'";
-//   }
+        private rabbitmqPublish: RabbitmqPublish,
+    ) {}
   
-    async notify(createOrderDTO: CreateOrderDTO):Promise<Order>{
+    async addOrder(createOrderDTO: CreateOrderDTO):Promise<Order>{
         const ord = await new this.orderModel(createOrderDTO)
         await ord.save()
+        const mq = await this.rabbitmqPublish.publishAMQP('ex_order', 'orderAdd',createOrderDTO)
         return ord
     }
 
@@ -86,9 +55,5 @@ export class OrderService {
        const updateStatus = await this.orderModel.findByIdAndUpdate(idOrder,CreateOrderDTO, {statusOrder:'F'})
 
         return updateStatus
-    }
-    all(){
-        //this.orderPublisher.sendEvent()
-        return 'HOla'
     }
 }

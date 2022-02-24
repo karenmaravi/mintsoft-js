@@ -1,14 +1,19 @@
 import { Controller, Post, Res, Body, HttpStatus, Get, Param } from '@nestjs/common';
 import { ProductService } from "./product.service";
 import { CreateProductDTO } from './product.dto';
+import { RabbitmqPublish } from "../utils/rabbitmq/rabbitmq.publish";
+
 
 @Controller('product')
 export class ProductController {
-    constructor(private ProductService: ProductService){}
+    constructor(
+        private ProductService: ProductService,
+        private RabbitmqPublish: RabbitmqPublish,
+    ){}
    
     @Post('notify')
     async notify(@Res() res, @Body() createProductDTO: CreateProductDTO){
-        const notify= await this.ProductService.notify(createProductDTO)
+        const notify= await this.ProductService.addProduct(createProductDTO)
         console.log(notify)
         res.status(HttpStatus.OK).json({
             message: 'OK',

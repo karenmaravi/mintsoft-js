@@ -4,17 +4,23 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CreateProductDTO } from "./product.dto";
 import { Product, ProductDocument } from "./product.schema";
 import { ProductClass } from './product';
+import { RabbitmqPublish } from "../utils/rabbitmq/rabbitmq.publish";
 
 @Injectable()
 export class ProductService {
     constructor (
         @InjectModel(Product.name) private ProductModel: Model<ProductDocument>,
         private ProductClass: ProductClass,
+        private rabbitmqPublish: RabbitmqPublish
     ) {}
 
-    async notify(createProductDTO: CreateProductDTO):Promise<Product>{
+
+    async addProduct(createProductDTO: CreateProductDTO):Promise<Product>{
         const ord = await new this.ProductModel(createProductDTO)
         await ord.save()
+
+        const mq = this.rabbitmqPublish.publishAMQP('ex_product', '', createProductDTO)
+        console.log('MQ:',mq)
         return ord
     }
 

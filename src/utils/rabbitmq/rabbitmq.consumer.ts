@@ -2,39 +2,35 @@ import { Injectable, Logger, Get, Inject } from '@nestjs/common';
 import { InjectAmqpConnection } from 'nestjs-amqp';
 
 @Injectable()
-export class MicroService {
-  getHello(): string {
-    return 'Hello World!4';
-  }
+export class RabbitmqConsumer {
+
   constructor(@InjectAmqpConnection() private readonly amqp) {
-    this.startConnect();
+    //this.publishAMQP();
   }
-  async startConnect() {
+
+  async consumerAMQP(queue:string) {
     const channel = await this.amqp.createChannel();
     const confirmChannel = await this.amqp.createConfirmChannel();
     confirmChannel.prefetch(1);
-    console.warn('********', confirmChannel);
+    //console.warn('********', confirmChannel);
     // const assert = await confirmChannel.assertQueue('prueba_queue', {
     //   durable: true
     // });
     //console.log(assert);
-    const sent = await confirmChannel.sendToQueue(
-      'prueba_queue',
-      new Buffer(JSON.stringify({ hello: 'HOLAAAAAAAAAA' })),
-      {
-        persistent: true,
-      },
-      (error, ok) => {
-        if (error) {
-          console.log('Message dropped!');
-        } else {
-          console.log('Message OK');
-        }
-      },
-    );
+
+    const v= confirmChannel.consume(queue, function (msg) {
+      const dataJson = JSON.parse(msg.content.toString()); 
+      console.log(dataJson)
+              
+      confirmChannel.ack(msg);
+                         
+    }, {
+        noAck: false
+        //noAck: true
+    });
 
     
-    console.log(sent);
+    console.log(v);
     // await channel.publish(
     //   'amq.topic',
     //   'my_queue',

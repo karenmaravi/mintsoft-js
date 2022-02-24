@@ -1,21 +1,34 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Injectable } from '@nestjs/common';
+import { OrderService } from 'src/order/order.service';
+import { ProductService } from "src/product/product.service";
 
 @Injectable()
 export class AppService {
-  //constructor(@Inject('HELLO_SERVICE') private client: ClientProxy){}
+  constructor(
+     private orderService: OrderService,
+     private productService: ProductService
+  ){}
 
-  getHello(): string {
-    return 'HOLA WORLD'
-    //return this.client.send({cmd: 'greeting'}, 'Progressive Coder');
+  async notify(notifyJson):Promise<object>{
+    var notify;
+    const typeProcess = 
+        notifyJson.DeliveryOrderId ? 1 : // ORDER
+        notifyJson.ProductId ? 2 : // PRODUCT
+        null; // NINGUNO
+    console.log('Tipo de proceso:',typeProcess)
+    switch (typeProcess) {
+        case 1:
+          console.log('ORDER')
+            notify = await this.orderService.addOrder(notifyJson);
+            break;
+        case 2:
+          console.log('PRODUCT')
+            notify = await this.productService.addProduct(notifyJson);
+            
+            break;
+        default:
+            break;
+    }
+    return notify
   }
-
-  // async getHelloAsync() {
-  //   const message= await this.client.send({cmd: 'greeting-async'},'Progressive Coder' );
-  //   return message;
-  // }
-
-  // async publishEvent(){
-  //   this.client.emit('cats_queue', {'bookName': 'The way of kings', 'author':'Brandon'})
-  // }
 }
