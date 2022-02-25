@@ -19,7 +19,7 @@ export class ProductService {
         const ord = await new this.ProductModel(createProductDTO)
         await ord.save()
 
-        const mq = this.rabbitmqPublish.publishAMQP('ex_product', '', createProductDTO)
+        const mq = this.rabbitmqPublish.publishAMQP('ex_product', 'addProduct', createProductDTO)
         console.log('MQ:',mq)
         return ord
     }

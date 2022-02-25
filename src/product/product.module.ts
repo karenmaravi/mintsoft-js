@@ -8,6 +8,7 @@ import { RabbitmqPublish } from "../utils/rabbitmq/rabbitmq.publish";
 import { ConfigModule, ConfigService } from 'nestjs-config';
 import * as path from 'path';
 import { AmqpModule } from 'nestjs-amqp';
+import { ProductConsumer } from './product.consumer';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { AmqpModule } from 'nestjs-amqp';
     }),
   ],
   controllers: [ProductController],
-  providers: [ProductService, ProductClass, RabbitmqPublish],
+  providers: [ProductService, ProductClass, RabbitmqPublish, ProductConsumer],
   exports: [ProductService]
 })
 export class ProductModule {}

@@ -18,7 +18,7 @@ export class OrderService {
     async addOrder(createOrderDTO: CreateOrderDTO):Promise<Order>{
         const ord = await new this.orderModel(createOrderDTO)
         await ord.save()
-        const mq = await this.rabbitmqPublish.publishAMQP('ex_order', 'orderAdd',createOrderDTO)
+        const mq = await this.rabbitmqPublish.publishAMQP('ex_order', '',createOrderDTO)
         return ord
     }
 
