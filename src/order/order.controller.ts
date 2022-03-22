@@ -1,6 +1,6 @@
-import { Controller, Post, Res, Body, HttpStatus, Get, Param, Inject } from '@nestjs/common';
+import { Controller, Post, Res, Body, HttpStatus, Get, Param, Inject, ParseIntPipe } from '@nestjs/common';
 import { OrderService } from "./order.service";
-import { CreateOrderDTO } from './order.dto';
+import { OrderDTO } from './order.dto';
 
 @Controller('order')
 export class OrderController {
@@ -10,8 +10,8 @@ export class OrderController {
 
 
     @Post('notify')
-    async notify(@Res() res, @Body() createOrderDTO: CreateOrderDTO){
-        const notify= await this.orderService.addOrder(createOrderDTO)
+    async notify(@Res() res, @Body() orderDTO: OrderDTO){
+        const notify= await this.orderService.addOrder(orderDTO)
         console.log(notify)
         res.status(HttpStatus.OK).json({
             message: 'OK',
@@ -20,12 +20,14 @@ export class OrderController {
 
     }
 
-    @Get('getClient/:idClien')
-    async getClient(@Res() res, @Param('idClien') idClien){
-        const client = await this.orderService.getClient(idClien)
+    @Get('getStatus/:idOrder')
+    async getClient(@Res() res, @Param('idOrder', ParseIntPipe) idOrder){
+        console.log('STATUS ORDER')
+        console.log(typeof(idOrder))
+        const status = await this.orderService.processStatus(idOrder)
         res.status(HttpStatus.OK).json({
             message: 'OK',
-            client: client
+            status: status
         })
     }
 }

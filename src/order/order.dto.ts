@@ -1,4 +1,5 @@
-export class CreateOrderDTO{
+export class OrderDTO{
+    readonly ID: number;
     readonly DeliveryOrderId: string;
     readonly MerchantId: string;
     readonly MerchanAppId: string;
@@ -8,7 +9,15 @@ export class CreateOrderDTO{
     };
     readonly resource: string;
     readonly attemps: number;
-    readonly received: String
-    readonly createdAt: Date
+    readonly received: String;
+    readonly createdAt: Date;
+    readonly detailStatus: {
+        readonly Name: string, 
+        readonly ExternalName: string,
+        readonly ID: number,
+        readonly LastUpdated: string,
+        readonly LastUpdatedByUser: string,
+    };
+    
 }
 

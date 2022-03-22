@@ -8,6 +8,8 @@ import { ConfigModule, ConfigService } from 'nestjs-config';
 import * as path from 'path';
 import { AmqpModule } from 'nestjs-amqp';
 import { RabbitmqPublish } from './utils/rabbitmq/rabbitmq.publish';
+import { OrderController } from './order/order.controller';
+import { OrderService } from './order/order.service';
 
 @Module({
   imports: [
@@ -17,11 +19,11 @@ import { RabbitmqPublish } from './utils/rabbitmq/rabbitmq.publish';
       useFactory: (config: ConfigService) => config.get('rabbitmq'),
       inject: [ConfigService],
     }),
-    OrderModule,
-    ProductModule
+     OrderModule,
+     ProductModule
   ],
   controllers: [
-    AppController, 
+    AppController
   ],
   providers: [
     AppService, RabbitmqPublish

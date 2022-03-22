@@ -23,6 +23,7 @@
   "dependencies": {
     "@enriqcg/nestjs-amqp": "^0.4.7",
     "@golevelup/nestjs-rabbitmq": "^2.2.0",
+    "@nestjs/axios": "0.0.7",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/microservices": "^8.3.1",
@@ -31,6 +32,7 @@
     "amqp-connection-manager": "^4.1.1",
     "amqp-decorator": "^1.0.33",
     "amqplib": "^0.8.0",
+    "axios": "^0.26.1",
     "microservices": "^0.1.0",
     "mongoose": "^6.2.2",
     "nestjs-amqp": "^0.2.2",

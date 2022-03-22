@@ -5,35 +5,47 @@ export type OrderDocument = Order & Document;
  
 @Schema({})
 export class Order {
-    @Prop({ unique: true })
-    DeliveryOrderId: String;
+  @Prop()
+  ID: Number;
 
-    @Prop()
-    MerchantId: String;
+  @Prop({ unique: true })
+  DeliveryOrderId: String;
 
-    @Prop()
-    MerchanAppId: String;
+  @Prop()
+  MerchantId: String;
 
-    @Prop(raw({
-        _id: { type: String },
-        client_id: { type: String }
-      }))
-    OauthClient: Record<string, any>;
+  @Prop()
+  MerchanAppId: String;
 
-    @Prop()
-    resource: String;
+  @Prop(raw({
+    _id: { type: String },
+    client_id: { type: String }
+  }))
+  OauthClient: Record<string, any>;
 
-    @Prop()
-    attemps: Number;
+  @Prop()
+  resource: String;
 
-    @Prop()
-    received: String;
+  @Prop()
+  attemps: Number;
 
-    @Prop({default: 'P'})
-    statusOrder: string;
+  @Prop()
+  received: String;
 
-    @Prop({default: Date.now})
-    createdAt: Date
+  @Prop({default: 'P'})
+  statusOrder: string;
+
+  @Prop({default: Date.now})
+  createdAt: Date
+
+  @Prop(raw({
+    Name: { type: String },
+    ExternalName: { type: String },
+    ID: { type: Number },
+    LastUpdated: { type: String },
+    LastUpdatedByUser: { type: String },
+  }))
+  detailStatus: Record<string, any>;
 }
- 
+
 export const OrderSchema = SchemaFactory.createForClass(Order);
