@@ -1,17 +1,11 @@
 import { Controller, Post, Res, Body, HttpStatus, Get, Param, Inject } from '@nestjs/common';
 import { OrderService } from "./order.service";
 import { CreateOrderDTO } from './order.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { ClientProxy } from "@nestjs/microservices";
-import { AmqpModule } from "nestjs-amqp";
-import { Consumer, Consume } from '@enriqcg/nestjs-amqp'
 
 @Controller('order')
 export class OrderController {
     constructor(
         private orderService: OrderService,
-        //@Inject('0RDER_SERVICE') private client: ClientProxy
-        //private readonly exampleService: ExampleService
     ){}
 
 
